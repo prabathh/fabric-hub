@@ -1,18 +1,10 @@
 "use client"
 
-import {
-  ShopImageSlider,
-  FeaturedCategories,
-  FeaturedItemsRow,
-  ShopFooter,
-} from "@/components/Shop";
-
 export default function ShopPage() {
   return (
     <div className="w-full flex flex-col overflow-auto">
       <div className="flex-1 w-full flex flex-col">
-        {/* Image Slider */}
-        <ShopImageSlider />
+        
 
         {/* Text Overlay */}
         <div className="w-full text-center py-10">
@@ -27,14 +19,6 @@ export default function ShopPage() {
           </p>
         </div>
 
-        {/* Featured Categories */}
-        <FeaturedCategories />
-
-        {/* Featured Items */}
-        <FeaturedItemsRow />
-        
-        {/* Footer */}
-        <ShopFooter />
       </div>
     </div>
   );
