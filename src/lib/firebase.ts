@@ -1,9 +1,8 @@
-// Firebase v9 modular SDK
 import { initializeApp, getApps } from "firebase/app";
 import { getAuth } from "firebase/auth";
-//import { getAnalytics } from "firebase/analytics";
+import { getFirestore } from "firebase/firestore"; // 👈 NEW IMPORT
 
-// Firebase config from environment variables
+// Firebase config from environment variables (use actual env variables in production)
 const firebaseConfig = {
   //   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY!,
   //   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN!,
@@ -24,12 +23,7 @@ const firebaseConfig = {
 // Initialize Firebase only once
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
 
-// Optional: initialize analytics if window is available
-// let analytics;
-// if (typeof window !== "undefined") {
-//   analytics = getAnalytics(app);
-// }
-
-// Export auth
+// Export services
 export const auth = getAuth(app);
+export const db = getFirestore(app); // 👈 NEW: Export the Firestore instance
 export default app;

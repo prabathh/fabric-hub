@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/common/Button/Button";
-import { Input } from "@/components/common/Inout/Input";
+import { Input } from "@/components/common/Input/Input";
 
 interface VehicleSearchViewProps {
   onSearch: (vehicleNumber: string) => void;
