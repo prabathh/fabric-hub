@@ -34,7 +34,7 @@ export default function ShopHeader() {
 
         {/* Icons */}
         <div className="order-2 md:order-3 flex items-center gap-4 md:gap-6">
-          <LuUserRound className="w-6 h-6 cursor-pointer" />
+          <LuUserRound onClick={() => router.push(`/login`)} className="w-6 h-6 cursor-pointer" />
           <FaRegHeart onClick={() => router.push(`/shop/wish-list`)} className="w-6 h-6 cursor-pointer" />
           <LuShoppingCart onClick={() => router.push(`/shop/cart`)} className="w-6 h-6 cursor-pointer" />
         </div>

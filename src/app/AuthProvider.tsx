@@ -42,7 +42,9 @@ export default function AuthProvider({
       } else {
         // User is signed out. Clear the store.
         setCurrentUser(null);
-        router.replace("/shop");
+        if (pathname.startsWith("/dashboard")) {
+          router.replace("/shop");
+        }
       }
       // Once the check is complete, set loading to false
       setIsAuthLoading(false);
