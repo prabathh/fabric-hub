@@ -90,6 +90,7 @@ export default function OrderSummary({
 				<Button
 					theme="dark"
 					className="w-full duration-200"
+          onClick={() => alert("Proceeding to payment...")}
 				>
 					Pay Now
 				</Button>
