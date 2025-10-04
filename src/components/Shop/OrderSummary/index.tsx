@@ -89,7 +89,7 @@ export default function OrderSummary({
 			<div className="mt-8">
 				<Button
 					theme="dark"
-					className="w-full hover:bg-gray-900 transition-colors duration-200"
+					className="w-full duration-200"
 				>
 					Pay Now
 				</Button>
