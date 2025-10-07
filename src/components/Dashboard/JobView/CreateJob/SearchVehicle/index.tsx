@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/common/Button/Button";
-import { Input } from "@/components/common/Input/Input";
+import { Button } from "@/components/common/Button";
+import { Input } from "@/components/common/Input";
 
 interface VehicleSearchViewProps {
   onSearch: (vehicleNumber: string) => void;

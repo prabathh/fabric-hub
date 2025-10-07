@@ -38,17 +38,16 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           ["text-sm px-3 py-2"]: size === "small",
           ["px-4 py-3 text-sm"]: size === "medium",
           ["px-6 py-4 text-base"]: size === "large",
-
           [`${COLORS.primary.bg} ${COLORS.primary.text} ${COLORS.primary.hoverBg} ${COLORS.primary.ring}`]:
             !disabled && theme === "primary",
           [`${COLORS.secondary.bg} ${COLORS.secondary.text} ${COLORS.secondary.hoverBg} ${COLORS.secondary.ring}`]:
             !disabled && theme === "secondary",
           [`${COLORS.success.bg} ${COLORS.success.text} ${COLORS.success.hoverBg} ${COLORS.success.ring}`]:
             !disabled && theme === "success",
-
-          // Dark theme
           ["bg-black text-white hover:bg-neutral-800 focus:ring-neutral-600"]:
             !disabled && theme === "dark",
+          [`border-2 border-gray-300`]: !disabled && theme === "attention",
+          [`bg-gray-300 cursor-not-allowed`]: disabled,
         },
         className
       )

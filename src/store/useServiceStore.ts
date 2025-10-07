@@ -1,17 +1,14 @@
 import { create } from "zustand";
+import { IconType } from "react-icons";
+import { DASH_NAV_ITEMS } from "@/constants/shopCategories";
 
 interface ServiceStore {
-  selectedLocation: { id: string; name: string } | null;
-  setLocation: (location: { id: string; name: string } | null) => void;
-  activeNav: { id: string; label: string, route: string };
-  //TODO: Fix type
-  setNav: (nav: { id: string; label: string, route: string }) => void;
+  activeNav: { id: string; label: string, route: string, icon: IconType };
+  setNav: (nav: { id: string; label: string, route: string, icon: IconType }) => void;
 }
 
 // Named export
 export const useServiceStore = create<ServiceStore>((set) => ({
-  selectedLocation: null,
-  setLocation: (location) => set({ selectedLocation: location }),
-  activeNav: { id: "createJob", label: "Create Job", route: 'dashboard/create-job' },
+  activeNav: DASH_NAV_ITEMS[0],
   setNav: (nav) => set({ activeNav: nav }),
 }));
