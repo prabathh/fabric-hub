@@ -7,10 +7,11 @@ import { useForm } from "react-hook-form";
 import { Button, Input } from "@/components/common";
 import { ProfileFormValues } from "@/types/auth";
 import { emailValidation, requiredValidation } from "@/helper/validation";
+import { StaticImageData } from "next/image";
 
 interface ProfileInfoSectionProps {
   initialProfile: ProfileFormValues;
-  initialAvatar: string;
+  initialAvatar?: StaticImageData | null;
   loading: boolean;
   onSaveProfile: (profile: ProfileFormValues) => Promise<void>;
 }
@@ -21,7 +22,7 @@ export default function ProfileInfoSection({
   loading,
   onSaveProfile,
 }: ProfileInfoSectionProps) {
-  const [avatar, setAvatar] = useState<string | null>(initialAvatar);
+  const [avatar, setAvatar] = useState<StaticImageData | null>(initialAvatar || null);
 
   const {
     register,
@@ -39,9 +40,9 @@ export default function ProfileInfoSection({
   const handleUploadPhoto = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => setAvatar(reader.result as string);
-      reader.readAsDataURL(file);
+      //const reader = new FileReader();
+      //reader.onloadend = () => setAvatar(reader.result as string);
+      //reader.readAsDataURL(file);
     }
   };
 

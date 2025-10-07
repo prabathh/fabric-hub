@@ -5,8 +5,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useAuthStore } from "@/store/useAuthStore";
 import { isAuthorized, isDashboardPath } from "@/helper/utils";
-import { fetchUserRole } from "@/lib/user";
-import { UserRole } from "@/types/auth";
+import { fetchUser } from "@/lib/user";
 import { usePathname, useRouter } from "next/navigation";
 import { Loading } from "@/components/common";
 
@@ -18,17 +17,13 @@ export default function AuthProvider({
   const { setCurrentUser, setIsAuthLoading, isAuthLoading } = useAuthStore();
   const router = useRouter();
   const pathname = usePathname();
-
+  
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const role = await fetchUserRole(user.uid);
-        const userRole = role as UserRole | null;
-        setCurrentUser({
-          uid: user.uid,
-          email: user.email,
-          role: userRole,
-        });
+        // fetchUser now handles setting setCurrentUser
+        const userRole = await fetchUser(user);
+
         if (isAuthorized(userRole) && !isDashboardPath(pathname)) {
           router.replace("/dashboard");
         }

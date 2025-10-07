@@ -34,7 +34,7 @@ export const emailValidation = {
 export const passwordValidation = {
     required: "Password is required",
     minLength: {
-        value: 8,
-        message: "Password must be at least 8 characters",
+        value: 6,
+        message: "Password must be at least 6 characters",
     },
 };

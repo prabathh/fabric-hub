@@ -5,23 +5,19 @@ import Image from "next/image";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { isAuthorized } from "@/helper/utils";
 import { auth } from "@/lib/firebase";
-import { useAuthStore } from "@/store/useAuthStore";
-import { fetchUserRole } from "@/lib/user";
+import { fetchUser } from "@/lib/user";
 import { useRouter } from "next/navigation";
-import { UserData } from "@/types/auth";
 import { UserRole } from "@/types/auth";
-import logo from "../../../public/assets/logo.png";
 import { Input, Button, Loading } from "@/components/common";
+import logo from "../../../public/assets/logo.png";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { setCurrentUser } = useAuthStore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Execute signInWithEmailAndPassword
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -34,13 +30,8 @@ export default function LoginPage() {
         password
       );
       const user = userCredential.user;
-      const role = await fetchUserRole(user.uid);
-      const userData: UserData = {
-        uid: user.uid,
-        email: user.email,
-        role: role as "super" | "admin" | "user" | null,
-      };
-      setCurrentUser(userData);
+      const role = await fetchUser(user);
+
       if (isAuthorized(role as UserRole | null)) {
         router.replace("/dashboard");
       } else {

@@ -2,11 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import { signOut } from "firebase/auth";
-import { auth } from "@/lib/firebase";
-import { useAuthStore } from "@/store/useAuthStore";
 import { SHOP_NAV_CATEGORIES } from "@/constants/shopCategories";
-import { Button } from "@/components/common/Button";
 interface SideNavProps {
   isOpen: boolean;
   sideNavRef: React.RefObject<HTMLDivElement | null>;
@@ -21,23 +17,11 @@ export default function SideNav({
   onClose,
 }: SideNavProps) {
   const router = useRouter();
-  const { setCurrentUser } = useAuthStore();
 
   // Handle button navigation
   const handleNavigation = (slug: string) => {
     router.push(`/shop/${slug}`);
     onClose(false);
-  };
-
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      setCurrentUser(null);
-      onClose(false);
-      router.replace("/shop");
-    } catch (error) {
-      console.error("Logout Error:", error);
-    }
   };
 
   return (
@@ -63,16 +47,6 @@ export default function SideNav({
               {cat.name}
             </button>
           ))}
-        </div>
-        <div className="mb-10">
-          <Button
-            theme="secondary"
-            size="small"
-            onClick={handleLogout}
-            className="w-full mt-6"
-          >
-            Log Out
-          </Button>
         </div>
       </nav>
     </div>
