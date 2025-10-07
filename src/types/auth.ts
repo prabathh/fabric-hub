@@ -8,3 +8,10 @@ export interface UserData {
   email: string | null;
   role: UserRole | null; 
 }
+
+export interface AuthStore {
+  currentUser: UserData | null;
+  setCurrentUser: (user: UserData | null) => void;
+  isAuthLoading: boolean;
+  setIsAuthLoading: (loading: boolean) => void;
+}

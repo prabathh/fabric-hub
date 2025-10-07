@@ -1,173 +1,126 @@
 "use client";
-import { useState, ChangeEvent } from "react";
 
-interface FormData {
-  country: string;
-  firstName: string;
-  lastName: string;
-  address: string;
-  city: string;
-  postalCode: string;
-  phone: string;
-}
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Input } from "@/components/common";
+import { ShippingFormValues } from "@/types/order";
+import { phoneValidation, requiredValidation } from "@/helper/validation";
+import { SHIPPING_OPTIONS } from "@/constants/shopCategories";
+
+type ShippingMethod = "colombo" | "outside" | "pickup";
 
 export default function ShippingDetails() {
-  const [formData, setFormData] = useState<FormData>({
-    country: "",
-    firstName: "",
-    lastName: "",
-    address: "",
-    city: "",
-    postalCode: "",
-    phone: "",
+  const [shippingMethod, setShippingMethod] =
+    useState<ShippingMethod>("colombo");
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<ShippingFormValues>({
+    mode: "onBlur",
+    defaultValues: {
+      country: "Sri Lanka",
+      firstName: "",
+      lastName: "",
+      address: "",
+      city: "",
+      postalCode: "",
+      phone: "",
+    },
   });
 
-  const [shippingMethod, setShippingMethod] = useState<"colombo" | "outside" | "pickup">("colombo");
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const onSubmit = (data: ShippingFormValues) => {
+    console.log("Shipping Address Submitted:", data);
+    console.log("Selected Shipping Method:", shippingMethod);
   };
 
   return (
     <div className="space-y-8">
-      {/* Shipping Address Section */}
-      <section className="px-6">
+      <section className="px-4 sm:px-6">
         <h2 className="text-lg font-semibold mb-4">Shipping Address</h2>
-        <form className="space-y-4">
-          {/* Country */}
-          <input
-            type="text"
-            name="country"
-            placeholder="Country"
-            value={formData.country}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded"
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <Input
+            label="Country"
+            placeholder="Country/Region"
+            error={errors.country}
+            {...register("country", requiredValidation)}
           />
-
-          {/* First Name | Last Name */}
-          <div className="grid grid-cols-2 gap-4">
-            <input
-              type="text"
-              name="firstName"
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Input
+              label="First Name"
               placeholder="First Name"
-              value={formData.firstName}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
+              error={errors.firstName}
+              {...register("firstName", requiredValidation)}
             />
-            <input
-              type="text"
-              name="lastName"
+            <Input
+              label="Last Name"
               placeholder="Last Name"
-              value={formData.lastName}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
+              error={errors.lastName}
+              {...register("lastName", requiredValidation)}
             />
           </div>
-
-          {/* Address */}
-          <input
-            type="text"
-            name="address"
+          <Input
+            label="Street Address"
             placeholder="Street Address"
-            value={formData.address}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded"
+            error={errors.address}
+            {...register("address", requiredValidation)}
           />
-
-          {/* City | Postal Code */}
-          <div className="grid grid-cols-2 gap-4">
-            <input
-              type="text"
-              name="city"
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Input
+              label="City"
               placeholder="City"
-              value={formData.city}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
+              error={errors.city}
+              {...register("city", requiredValidation)}
             />
-            <input
-              type="text"
-              name="postalCode"
+            <Input
+              label="Postal Code"
               placeholder="Postal Code"
-              value={formData.postalCode}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
+              error={errors.postalCode}
+              {...register("postalCode", requiredValidation)}
             />
           </div>
-
-          {/* Phone */}
-          <input
-            type="text"
-            name="phone"
-            placeholder="Phone"
-            value={formData.phone}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded"
+          <Input
+            type="tel"
+            label="Phone"
+            placeholder="Phone Number"
+            error={errors.phone}
+            {...register("phone", phoneValidation)}
           />
         </form>
       </section>
-
-      {/* Shipping Method Section */}
-      <section className="px-6">
+      <section className="px-4 sm:px-6">
         <h2 className="text-lg font-semibold mb-4">Shipping Method</h2>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left">
+          <table className="w-full text-sm text-left border-collapse">
             <thead>
-              <tr className="text-gray-600">
-                <th className="py-2">Destination</th>
+              <tr className="text-gray-600 border-b border-gray-300">
+                <th className="py-2 px-1">Destination</th>
                 <th className="py-2">Estimated Arrival</th>
                 <th className="py-2 text-right">Shipping Cost</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              <tr
-                className="hover:bg-gray-50 cursor-pointer"
-                onClick={() => setShippingMethod("colombo")}
-              >
-                <td className="py-3">
-                  <input
-                    type="radio"
-                    checked={shippingMethod === "colombo"}
-                    onChange={() => setShippingMethod("colombo")}
-                    className="mr-2"
-                  />
-                  Colombo District (0–15)
-                </td>
-                <td className="py-3">3–4 Working Day</td>
-                <td className="py-3 text-right">Rs 1,000.00</td>
-              </tr>
-              <tr
-                className="hover:bg-gray-50 cursor-pointer"
-                onClick={() => setShippingMethod("outside")}
-              >
-                <td className="py-3">
-                  <input
-                    type="radio"
-                    checked={shippingMethod === "outside"}
-                    onChange={() => setShippingMethod("outside")}
-                    className="mr-2"
-                  />
-                  Outside Colombo District
-                </td>
-                <td className="py-3">3–4 Working Day</td>
-                <td className="py-3 text-right">Rs 1,500.00</td>
-              </tr>
-              <tr
-                className="hover:bg-gray-50 cursor-pointer"
-                onClick={() => setShippingMethod("pickup")}
-              >
-                <td className="py-3">
-                  <input
-                    type="radio"
-                    checked={shippingMethod === "pickup"}
-                    onChange={() => setShippingMethod("pickup")}
-                    className="mr-2"
-                  />
-                  Store Pickup
-                </td>
-                <td className="py-3">-</td>
-                <td className="py-3 text-right">Free</td>
-              </tr>
+              {Object.entries(SHIPPING_OPTIONS).map(([key, option]) => (
+                <tr
+                  key={key}
+                  className="hover:bg-gray-50 cursor-pointer"
+                  onClick={() => setShippingMethod(key as ShippingMethod)}
+                >
+                  <td className="py-3 px-1">
+                    <input
+                      type="radio"
+                      name="shippingMethod"
+                      checked={shippingMethod === key}
+                      onChange={() => setShippingMethod(key as ShippingMethod)}
+                      className="mr-2 text-red-500 focus:ring-red-500"
+                    />
+                    {option.destination}
+                  </td>
+                  <td className="py-3">{option.arrival}</td>
+                  <td className="py-3 text-right font-medium">{option.cost}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

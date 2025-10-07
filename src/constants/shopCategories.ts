@@ -1,3 +1,66 @@
+import { MdOutlineDashboard, MdOutlineInventory, MdOutlineAccountBalance } from "react-icons/md";
+import { TbCalendarDollar } from "react-icons/tb";
+
+export const DASH_NAV_ITEMS = [
+  {
+    id: "dashboard",
+    label: "Dashboard",
+    route: "/dashboard",
+    icon: MdOutlineDashboard
+  },
+  {
+    id: "inventory-management",
+    label: "Inventory Management",
+    route: "/dashboard/inventory",
+    icon: MdOutlineInventory
+  },
+  {
+    id: "sales-invoice",
+    label: "Sales Invoice",
+    route: "/dashboard/sales",
+    icon: TbCalendarDollar
+  },
+  {
+    id: "accounts",
+    label: "Accounts",
+    route: "/dashboard/accounts",
+    icon: MdOutlineAccountBalance
+  },
+];
+
+export const AVAILABLE_TAGS = [
+  { id: "fast_moving", name: "Fast Moving" },
+  { id: "sale", name: "Sale" },
+  { id: "new_arrivals", name: "New Arrivals" },
+];
+
+export const SHIPPING_OPTIONS = {
+  colombo: {
+    destination: "Colombo District (0–15)",
+    arrival: "3–4 Working Day",
+    cost: "Rs 1,000.00",
+  },
+  outside: {
+    destination: "Outside Colombo District",
+    arrival: "3–4 Working Day",
+    cost: "Rs 1,500.00",
+  },
+  pickup: {
+    destination: "Store Pickup",
+    arrival: "-",
+    cost: "Free",
+  },
+};
+
+
+
+
+
+
+
+
+
+
 export const SHOP_CATEGORIES = [
   { slug: "new-arrivals", name: "New Arrivals", special: false },
   { slug: "best-sellers", name: "Best Sellers", special: false },
@@ -16,7 +79,6 @@ export const SHOP_NAV_CATEGORIES = [
   { slug: "fabrics-p-z", name: "Fabrics P–Z", special: false },
   { slug: "sale", name: "Sale", special: true },
 ];
-
 
 import item_1 from "../../public/assets/item_1.png";
 import item_2 from "../../public/assets/item_2.png";
@@ -43,12 +105,6 @@ export const SAMPLE_ITEMS = [
   // { image: item_4, name: "Chiffon Fabric", price: "$14.99" },
 ];
 
-export const INITIAL_CART_ITEMS = [
-    { id: "item1", image: item_1, name: "Cotton Blend Marrakech Bloom", price: 180.00, details: "Color: Blue, Size: L", quantity: 1 },
-    { id: "item2", image: item_2, name: "Slim Fit Jeans", price: 75.50, details: "Color: Black, Size: 32", quantity: 2 },
-    { id: "item3", image: item_3, name: "Chiffon Fabric", price: 14.99, details: "Color: Red, Code: 75X", quantity: 1 },
-];
-
 export const ITEM_COLORS = [
   { name: "Red", hex: "#ef4444" },
   { name: "Blue", hex: "#3b82f6" },
@@ -57,7 +113,42 @@ export const ITEM_COLORS = [
 ];
 
 export const MOCK_FILTERS = {
-  Color: ['Red', 'Blue', 'Black', 'White'],
-  Size: ['S', 'M', 'L', 'XL'],
-  Availability: ['In Stock', 'Pre-Order'],
+  Color: ["Red", "Blue", "Black", "White"],
+  Size: ["S", "M", "L", "XL"],
+  Availability: ["In Stock", "Pre-Order"],
 };
+
+export const INITIAL_CART_ITEMS = [
+  {
+    id: "item1",
+    image: item_1,
+    name: "Cotton Blend Marrakech Bloom",
+    price: 180.0,
+    details: "Color: Blue, Size: L",
+    quantity: 1,
+  },
+  {
+    id: "item2",
+    image: item_2,
+    name: "Slim Fit Jeans",
+    price: 75.5,
+    details: "Color: Black, Size: 32",
+    quantity: 2,
+  },
+  {
+    id: "item3",
+    image: item_3,
+    name: "Chiffon Fabric",
+    price: 14.99,
+    details: "Color: Red, Code: 75X",
+    quantity: 1,
+  },
+];
+
+import { FaDollarSign, FaBoxOpen, FaShoppingCart, FaClock } from 'react-icons/fa';
+export const STATS_DATA = [
+  { name: "Total Revenue", value: "$125,450", icon: FaDollarSign, color: "text-green-600" },
+  { name: "Inventory Value", value: "$45,900", icon: FaBoxOpen, color: "text-blue-600" },
+  { name: "Total Orders", value: "3,120", icon: FaShoppingCart, color: "text-purple-600" },
+  { name: "Pending Orders", value: "45", icon: FaClock, color: "text-red-600" },
+];
