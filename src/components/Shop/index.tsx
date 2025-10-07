@@ -6,5 +6,7 @@ export { default as FeaturedCategories } from "./FeaturedCategories/index";
 export { default as FeaturedItemsRow } from "./FeaturedItemsRow";
 export { default as ItemCard } from "./ItemCard/index";
 export { default as ShopFooter } from "./ShopFooter/index";
+export { default as ShippingDetails } from "./ShippingDetails";
+export { default as OrderSummary } from "./OrderSummary";
 export { default as ProfileInfoSection } from "./ProfileInfoSection/index";
 export { default as ChangePasswordSection } from "./ChangePasswordSection/index";

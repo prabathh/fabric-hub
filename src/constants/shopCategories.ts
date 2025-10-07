@@ -34,6 +34,23 @@ export const AVAILABLE_TAGS = [
   { id: "new_arrivals", name: "New Arrivals" },
 ];
 
+export const SHIPPING_OPTIONS = {
+  colombo: {
+    destination: "Colombo District (0–15)",
+    arrival: "3–4 Working Day",
+    cost: "Rs 1,000.00",
+  },
+  outside: {
+    destination: "Outside Colombo District",
+    arrival: "3–4 Working Day",
+    cost: "Rs 1,500.00",
+  },
+  pickup: {
+    destination: "Store Pickup",
+    arrival: "-",
+    cost: "Free",
+  },
+};
 
 
 
