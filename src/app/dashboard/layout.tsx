@@ -1,89 +1,83 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useAuthStore } from "@/store/useAuthStore";
-import { UserRole } from "@/types/auth";
+import { useServiceStore } from "@/store/useServiceStore";
+import { useCategoryStore } from "@/store/useCategoryStore";
+import { isAuthorized } from "@/helper/utils";
+import { signOut } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 import { LeftNav } from "@/components/Dashboard";
-
-// Helper function to check required permissions
-const isAuthorized = (role: UserRole | null): boolean => {
-  return role === "super" || role === "admin";
-};
+import { DASH_NAV_ITEMS } from "@/constants/shopCategories";
+import { Nav } from "@/types/dashboard";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { currentUser, isAuthLoading } = useAuthStore();
+  const { currentUser, isAuthLoading, setCurrentUser } = useAuthStore();
+  const { loadCategories } = useCategoryStore();
+  const { setNav, activeNav } = useServiceStore();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
-    // Only run checks after the Firebase initialization is complete
-    if (!isAuthLoading) {
-      // CONDITION 1: Check Authentication Status
-      if (!currentUser) {
-        // If not authenticated, redirect to login
-        router.replace("/shop");
-        return;
-      }
+    if (isAuthLoading) return;
 
-      // CONDITION 2: Check Authorization Role
-      if (!isAuthorized(currentUser.role)) {
-        router.replace("/shop");
-      }
+    const isUserAuthorized = currentUser && isAuthorized(currentUser.role);
+    if (!isUserAuthorized) {
+      router.replace("/shop");
+      return;
     }
-  }, [isAuthLoading, currentUser, router]);
 
-  if (isAuthLoading) {
+    // Load INIT Data
+    // Only load categories once the user is confirmed to be authorized
+    loadCategories();
+  }, [isAuthLoading, currentUser, router, loadCategories]);
+
+  useEffect(() => {
+    const sortedNavItems = [...DASH_NAV_ITEMS].sort(
+      (a, b) => b.route.length - a.route.length
+    );
+    const matchingItem = sortedNavItems.find((item) => {
+      const itemRoute = item.route.endsWith("/")
+        ? item.route
+        : item.route + "/";
+      const currentPath = pathname.endsWith("/") ? pathname : pathname + "/";
+      return currentPath.startsWith(itemRoute);
+    });
+    if (matchingItem && matchingItem.id !== activeNav.id) {
+      setNav(matchingItem);
+    }
+  }, [pathname, setNav, activeNav]);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      setCurrentUser(null);
+      router.replace("/shop");
+    } catch (error) {
+      console.error("Logout Error:", error);
+    }
+  };
+
+  const handleNavClick = (nav: Nav) => {
+    setNav(nav);
+    router.replace(nav.route);
+  };
+
+  if (currentUser && isAuthorized(currentUser.role)) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        Verifying Access...
+      <div className="w-full h-screen flex flex-row">
+        <LeftNav
+          setActiveNav={handleNavClick}
+          onLogout={handleLogout}
+          isUserLoggedIn={!!currentUser}
+        />
+        <div className="bg-gray-100 w-full">{children}</div>
       </div>
     );
   }
-
-  // 2. If the user is authenticated AND authorized, render the dashboard content.
-  if (currentUser && isAuthorized(currentUser.role)) {
-    return (
-      <>
-        <LeftNav
-          selectedLocation={{id: "ongoing-jobs", name: "Ongoing Jobs"}}
-          navItems={[
-            {
-              id: "ongoing-jobs",
-              label: "Ongoing Jobs",
-              route: "/dashboard/ongoing-jobs",
-            },
-            {
-              id: "completed-jobs",
-              label: "Completed Jobs",
-              route: "/dashboard/completed-jobs",
-            },
-            {
-              id: "manage-locations",
-              label: "Manage Locations",
-              route: "/dashboard/manage-locations",
-            },
-            {
-              id: "manage-users",
-              label: "Manage Users",
-              route: "/dashboard/manage-users",
-            },
-          ]}
-          activeNav={{ id: "", label: "", route: "" }}
-          setActiveNav={() => {}}
-          onLogout={() => {
-            // useAuthStore.getState().logout();
-            // router.replace("/login");
-          }}
-        />
-        {children}
-      </>
-    );
-  }
-
-  // 3. Fallback: If loading is false but the user failed the checks, this prevents
-  return null;
 }

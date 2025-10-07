@@ -1,12 +1,5 @@
 import { create } from "zustand";
-import { UserData } from "@/types/auth";
-
-interface AuthStore {
-  currentUser: UserData | null;
-  setCurrentUser: (user: UserData | null) => void;
-  isAuthLoading: boolean;
-  setIsAuthLoading: (loading: boolean) => void;
-}
+import { AuthStore } from "@/types/auth";
 
 export const useAuthStore = create<AuthStore>((set) => ({
   currentUser: null,

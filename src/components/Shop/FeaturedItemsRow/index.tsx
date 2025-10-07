@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import ItemCard from "../ItemCard";
-import { Button } from "@/components/common/Button/Button";
+import { Button } from "@/components/common/Button";
 import { SAMPLE_ITEMS } from "@/constants/shopCategories";
 
 const filterButtons = ["New Arrivals", "Best Sellers", "Offers"];

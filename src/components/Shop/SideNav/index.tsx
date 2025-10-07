@@ -6,7 +6,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useAuthStore } from "@/store/useAuthStore";
 import { SHOP_NAV_CATEGORIES } from "@/constants/shopCategories";
-import { Button } from "@/components/common/Button/Button";
+import { Button } from "@/components/common/Button";
 interface SideNavProps {
   isOpen: boolean;
   sideNavRef: React.RefObject<HTMLDivElement | null>;

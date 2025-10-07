@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/common/Button/Button";
-import { Input } from "@/components/common/Input/Input";
+import { Button } from "@/components/common/Button";
+import { Input } from "@/components/common/Input";
 
 interface VehicleInfoFormProps {
   vehicleNumber: string;

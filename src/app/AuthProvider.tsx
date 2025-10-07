@@ -2,16 +2,13 @@
 
 import React, { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/lib/firebase"; // Your initialized auth instance
+import { auth } from "@/lib/firebase";
 import { useAuthStore } from "@/store/useAuthStore";
+import { isAuthorized, isDashboardPath } from "@/helper/utils";
 import { fetchUserRole } from "@/lib/user";
 import { UserRole } from "@/types/auth";
 import { usePathname, useRouter } from "next/navigation";
-
-// Helper function to check required permissions
-const isAuthorized = (role: UserRole | null): boolean => {
-  return role === "super" || role === "admin";
-};
+import { Loading } from "@/components/common";
 
 export default function AuthProvider({
   children,
@@ -23,30 +20,24 @@ export default function AuthProvider({
   const pathname = usePathname();
 
   useEffect(() => {
-    // Subscribe to the Firebase authentication state changes
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        // User is signed in. Fetch role from DB.
         const role = await fetchUserRole(user.uid);
-
-        // Set the user data in the global store
+        const userRole = role as UserRole | null;
         setCurrentUser({
           uid: user.uid,
           email: user.email,
-          role: role as "super" | "admin" | "user" | null,
+          role: userRole,
         });
-
-        if (isAuthorized(role as UserRole | null)) {
+        if (isAuthorized(userRole) && !isDashboardPath(pathname)) {
           router.replace("/dashboard");
         }
       } else {
-        // User is signed out. Clear the store.
         setCurrentUser(null);
-        if (pathname.startsWith("/dashboard")) {
+        if (isDashboardPath(pathname)) {
           router.replace("/shop");
         }
       }
-      // Once the check is complete, set loading to false
       setIsAuthLoading(false);
     });
     return () => unsubscribe();
@@ -54,11 +45,9 @@ export default function AuthProvider({
 
   if (isAuthLoading) {
     return (
-      <span className="flex h-screen items-center justify-center gap-1 py-3">
-        <span className="w-10 h-10 bg-red-500 rounded-full animate-bounce [animation-delay:-0.4s]"></span>
-        <span className="w-10 h-10 bg-red-500 rounded-full animate-bounce [animation-delay:-0.25s]"></span>
-        <span className="w-10 h-10 bg-red-500 rounded-full animate-bounce"></span>
-      </span>
+      <div className="flex h-screen items-center justify-center">
+        <Loading size="large" />
+      </div>
     );
   }
 

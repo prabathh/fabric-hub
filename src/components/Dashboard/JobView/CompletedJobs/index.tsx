@@ -4,10 +4,6 @@ import JobCard from "../JobCard";
 import sample_vehicle from "../../../../public/assets/sample_vehicle.jpg";
 import sample_vehicle2 from "../../../../public/assets/sample_vehicle2.jpg";
 
-// interface CompletedJobsViewProps {
-//   selectedLocation?: { id: string; name: string } | null;
-// }
-
 const mockJobs = [
   {
     id: "job1",
