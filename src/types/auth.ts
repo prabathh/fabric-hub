@@ -15,3 +15,20 @@ export interface AuthStore {
   isAuthLoading: boolean;
   setIsAuthLoading: (loading: boolean) => void;
 }
+
+export interface ProfileFormValues {
+  firstName: string;
+  lastName: string;
+  address: string;
+  email: string;
+  phone: string;
+  country: string;
+  city: string;
+  postalCode: string;
+}
+
+export interface PasswordFormValues {
+  currentPassword: "";
+  newPassword: "";
+  confirmNewPassword: "";
+}
