@@ -1,6 +1,6 @@
 import { initializeApp, getApps } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore"; // 👈 NEW IMPORT
+import { getFirestore } from "firebase/firestore";
 
 // Firebase config from environment variables (use actual env variables in production)
 const firebaseConfig = {
@@ -25,5 +25,5 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
 
 // Export services
 export const auth = getAuth(app);
-export const db = getFirestore(app); // 👈 NEW: Export the Firestore instance
+export const db = getFirestore(app);
 export default app;

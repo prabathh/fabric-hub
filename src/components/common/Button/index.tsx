@@ -43,6 +43,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             !disabled && theme === "secondary",
           [`${COLORS.success.bg} ${COLORS.success.text} ${COLORS.success.hoverBg} ${COLORS.success.ring}`]:
             !disabled && theme === "success",
+          [`border-2 border-gray-300`]: !disabled && theme === "attention",
+          [`bg-gray-300 cursor-not-allowed`]: disabled,
         },
         className
       )
