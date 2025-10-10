@@ -145,10 +145,17 @@ export const INITIAL_CART_ITEMS = [
   },
 ];
 
-import { FaDollarSign, FaBoxOpen, FaShoppingCart, FaClock } from 'react-icons/fa';
+import { FaDollarSign, FaBoxOpen, FaShoppingCart, FaClock, FaUsers } from 'react-icons/fa';
+import { MdOutlinePayments } from "react-icons/md";
 export const STATS_DATA = [
   { name: "Total Revenue", value: "$125,450", icon: FaDollarSign, color: "text-green-600" },
   { name: "Inventory Value", value: "$45,900", icon: FaBoxOpen, color: "text-blue-600" },
   { name: "Total Orders", value: "3,120", icon: FaShoppingCart, color: "text-purple-600" },
   { name: "Pending Orders", value: "45", icon: FaClock, color: "text-red-600" },
+];
+export const SALES_CARD_DATA = [
+  { name: "Total Sales", value: "$125,450", icon: FaDollarSign, color: "text-green-600" },
+  { name: "Completed Orders", value: "10", icon: FaBoxOpen, color: "text-blue-600" },
+  { name: "Pending Payments", value: "2", icon: MdOutlinePayments, color: "text-red-600" },
+  { name: "Active Customers", value: "100", icon: FaUsers, color: "text-black" },
 ];

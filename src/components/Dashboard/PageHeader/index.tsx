@@ -7,6 +7,8 @@ interface LeftNavProps {
   label: string;
   description: string;
   button?: string;
+  // theme?: string;
+  theme?: "disabled" | "primary" | "secondary" | "success" | "attention" | "dark";
   onClick?: () => void;
   Icon?: IconType;
 }
@@ -15,6 +17,7 @@ export default function PageHeader({
   label,
   description,
   button,
+  theme,
   onClick,
   Icon,
 }: LeftNavProps) {
@@ -28,7 +31,7 @@ export default function PageHeader({
         <div className="flex-shrink-0 ml-4">
           <Button
             onClick={onClick}
-            theme="secondary"
+            theme={theme || "primary"}
           >
             {Icon && <Icon className="w-4 h-4" />}
             <span>{button}</span>
