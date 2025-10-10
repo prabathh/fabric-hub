@@ -17,5 +17,4 @@ export interface OrderItem {
   details: string;
   price: number;
   quantity: number;
-  color: string;
 }

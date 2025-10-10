@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/common/Button";
 import { OrderItem } from "@/types/order";
 import { FaArrowLeft } from "react-icons/fa";
+import item_1 from '../../../../../public/assets/item_1.png'
+import item_2 from '../../../../../public/assets/item_2.png'
 
 interface ViewOrderPageProps {
   orderId?: string;
@@ -24,22 +26,20 @@ export default function ViewOrderPage({
   status = "Completed",
   items = [
     {
-      id: "1",
-      name: "Cotton Blend Marrakech Bloom - CB-MB-2025",
-      code: "CB-MB-2025",
-      colour: "Blue",
+      id: "CB-MB-2025",
+      name: "Cotton Blend",
       price: 2500,
       quantity: 1,
-      image: "/assets/cotton.png",
+      image: item_1,
+      details: "Marrakech Bloom - CB-MB-2025",
     },
     {
-      id: "2",
-      name: "Linen Blend Marrakech Bloom - LB-MB-2025",
-      code: "LB-MB-2025",
-      colour: "Blue",
+      id: "LB-MB-2025",
+      name: "Linen Blend Marrakech",
       price: 1500,
       quantity: 1,
-      image: "/assets/cotton.png",
+      image: item_2,
+      details: "Marrakech Bloom - LB-MB-2025",
     },
   ],
   subtotal = 4000,
@@ -152,7 +152,7 @@ function OrderItemCard({ item }: OrderItemCardProps) {
       {/* product info */}
       <div className="flex-1 min-w-0 px-4">
         <p className="text-lg font-semibold truncate">{item.name}</p>
-        <p className="text-md text-gray-500 mt-1">Colour: {item.color}</p>
+        {/* <p className="text-md text-gray-500 mt-1">Colour: {item.color}</p> */}
       </div>
 
       {/* price & quantity */}
