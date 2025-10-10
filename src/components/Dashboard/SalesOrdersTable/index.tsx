@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import React, { useState } from "react";
 
 interface Order {
@@ -14,14 +15,44 @@ const SalesOrdersTable: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"retail" | "wholesale">("retail");
 
   const retailOrders: Order[] = [
-    { id: "#0001", date: "01 - 01 - 2025", customer: "Walk-in Customer", amount: "Rs 4,000", payment: "Cash" },
-    { id: "#0002", date: "01 - 01 - 2025", customer: "Walk-in Customer", amount: "Rs 3,000", payment: "Cash" },
-    { id: "#0003", date: "01 - 01 - 2025", customer: "Online", amount: "Rs 10,000", payment: "Cash" },
+    {
+      id: "#0001",
+      date: "01 - 01 - 2025",
+      customer: "Walk-in Customer",
+      amount: "Rs 4,000",
+      payment: "Cash",
+    },
+    {
+      id: "#0002",
+      date: "01 - 01 - 2025",
+      customer: "Walk-in Customer",
+      amount: "Rs 3,000",
+      payment: "Cash",
+    },
+    {
+      id: "#0003",
+      date: "01 - 01 - 2025",
+      customer: "Online",
+      amount: "Rs 10,000",
+      payment: "Cash",
+    },
   ];
 
   const wholesaleOrders: Order[] = [
-    { id: "#1001", date: "02 - 01 - 2025", customer: "ABC Traders", amount: "Rs 25,000", payment: "Card" },
-    { id: "#1002", date: "03 - 01 - 2025", customer: "XYZ Distributors", amount: "Rs 19,000", payment: "Cash" },
+    {
+      id: "#1001",
+      date: "02 - 01 - 2025",
+      customer: "ABC Traders",
+      amount: "Rs 25,000",
+      payment: "Card",
+    },
+    {
+      id: "#1002",
+      date: "03 - 01 - 2025",
+      customer: "XYZ Distributors",
+      amount: "Rs 19,000",
+      payment: "Cash",
+    },
   ];
 
   const currentOrders = activeTab === "retail" ? retailOrders : wholesaleOrders;
@@ -60,7 +91,9 @@ const SalesOrdersTable: React.FC = () => {
         <table className="w-full text-left border-collapse">
           <thead className="bg-gray-100">
             <tr>
-              <th className="py-3 px-6 font-medium text-gray-700">Order Details</th>
+              <th className="py-3 px-6 font-medium text-gray-700">
+                Order Details
+              </th>
               <th className="py-3 px-6 font-medium text-gray-700">Customer</th>
               <th className="py-3 px-6 font-medium text-gray-700">Amount</th>
               <th className="py-3 px-6 font-medium text-gray-700">Payment</th>
@@ -69,15 +102,34 @@ const SalesOrdersTable: React.FC = () => {
           </thead>
           <tbody>
             {currentOrders.map((order) => (
-              <tr key={order.id} className="border-t border-gray-100 hover:bg-gray-50">
+              <tr
+                key={order.id}
+                className="border-t border-gray-100 hover:bg-gray-50"
+              >
                 <td className="py-4 px-6">
                   <div className="font-medium">{order.id}</div>
-                  <div className="text-sm text-gray-500">Date : {order.date}</div>
+                  <div className="text-sm text-gray-500">
+                    Date : {order.date}
+                  </div>
                 </td>
-                <td className="py-4 text-md font-extralight px-6">{order.customer}</td>
-                <td className="py-4 text-md font-extralight px-6">{order.amount}</td>
-                <td className="py-4 text-md font-extralight px-6">{order.payment}</td>
-                <td className="py-4 text-md font-extralight px-6 text-blue-500 cursor-pointer hover:underline">View</td>
+                <td className="py-4 text-md font-extralight px-6">
+                  {order.customer}
+                </td>
+                <td className="py-4 text-md font-extralight px-6">
+                  {order.amount}
+                </td>
+                <td className="py-4 text-md font-extralight px-6">
+                  {order.payment}
+                </td>
+                {/* <td className="py-4 text-md font-extralight px-6 text-blue-500 cursor-pointer hover:underline">View</td> */}
+                <td>
+                  <Link
+                    href={`/dashboard/sales/view-order`}
+                    className="text-md font-extralight text-blue-500 cursor-pointer px-6"
+                  >
+                    View
+                  </Link>
+                </td>
               </tr>
             ))}
           </tbody>
