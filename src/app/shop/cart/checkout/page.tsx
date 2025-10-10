@@ -1,10 +1,18 @@
 "use client";
 
 import Breadcrumbs from "@/components/common/Breadcrumbs/Breadcrumbs";
-import {ShippingDetails, OrderSummary} from "@/components/Shop";
-import { INITIAL_CART_ITEMS } from "@/constants/shopCategories";
+import { ShippingDetails, OrderSummary } from "@/components/Shop";
+import { useCart } from "@/hooks/useCart";
+import { useState } from "react";
 
 export default function CheckoutPage() {
+  const { cartItems, subtotal, shipping, total, couponDiscount } = useCart();
+  const [loading, setLoading] = useState(false);
+
+  const handlePay = () => {
+    setLoading(true);
+  };
+
   return (
     <div className="p-6 w-full mx-auto h-screen overflow-auto">
       <Breadcrumbs
@@ -31,10 +39,18 @@ export default function CheckoutPage() {
               </span>
             </p>
           </section>
-        <ShippingDetails />
+          <ShippingDetails />
         </div>
         <div className="h-full md:pl-8 md:border-l border-gray-300">
-          <OrderSummary onPay={() => {}} items={INITIAL_CART_ITEMS} shipping={1000} />
+          <OrderSummary
+            onPay={handlePay}
+            items={cartItems}
+            subtotal={subtotal}
+            shipping={shipping}
+            total={total}
+            couponDiscount={couponDiscount}
+            loading={loading}
+          />
         </div>
       </div>
     </div>

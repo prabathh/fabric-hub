@@ -10,3 +10,4 @@ export { default as ShippingDetails } from "./ShippingDetails";
 export { default as OrderSummary } from "./OrderSummary";
 export { default as ProfileInfoSection } from "./ProfileInfoSection/index";
 export { default as ChangePasswordSection } from "./ChangePasswordSection/index";
+export { default as ShopFilters } from "./ShopFilters/index";

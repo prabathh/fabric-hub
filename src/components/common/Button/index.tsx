@@ -33,7 +33,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ) {
     const mergedClassName = twMerge(
       clsx(
-        "flex items-center justify-center gap-1 rounded-lg font-bold uppercase transition-colors duration-200 focus:outline-none focus:ring-2",
+        "flex items-center justify-center gap-1 rounded-lg font-bold uppercase transition-colors duration-200 focus:outline-none focus:ring-2 cursor-pointer",
         {
           ["text-sm px-3 py-2"]: size === "small",
           ["px-4 py-3 text-sm"]: size === "medium",

@@ -36,3 +36,5 @@ export const getErrorMessage = (err: unknown): string => {
   }
   return 'An unknown error occurred.';
 };
+
+export const formatCurrency = (amount: number) => `Rs ${amount.toFixed(2)}`;

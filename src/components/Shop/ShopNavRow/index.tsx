@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FaBars } from "react-icons/fa";
+import { FaBarsStaggered } from "react-icons/fa6";
 import SideNav from "../SideNav";
 import { SHOP_NAV_CATEGORIES } from "@/constants/shopCategories";
 
@@ -53,9 +54,9 @@ export default function ShopNav() {
       <div className="relative z-50">
         <button
           onClick={() => setIsSideOpen(true)}
-          className="flex items-center gap-2 font-medium text-gray-800"
+          className="flex items-center gap-2 text-gray-800 font-semibold"
         >
-          <FaBars className="w-5 h-5" />
+          {isSideOpen ? <FaBarsStaggered className="w-5 h-5" /> : <FaBars className="w-5 h-5" />}
           <span>Shop All</span>
         </button>
 
@@ -74,9 +75,9 @@ export default function ShopNav() {
         {SHOP_NAV_CATEGORIES?.map((cat) => (
           <button
             key={cat.slug}
-            className={`${
+            className={`font-semibold ${
               cat.special
-                ? "text-red-500 font-semibold"
+                ? "text-red-500 font-bold"
                 : "text-gray-800 hover:text-red-500"
             }`}
             onClick={() => router.replace(`/shop/${cat.slug}`)}

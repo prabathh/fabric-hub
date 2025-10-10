@@ -2,23 +2,15 @@
 
 import { FaRegHeart } from "react-icons/fa";
 import Image, { StaticImageData } from "next/image";
-import { useRouter } from "next/navigation";
 
 interface ItemCardProps {
-  itemId: string
   image: string | StaticImageData;
   name: string;
-  price: string;
-  categoryId: string | null;
+  price: number;
+  handleClick: () => void;
 }
 
-export default function ItemCard({ image, name, price, itemId, categoryId }: ItemCardProps) {
-  const router = useRouter();
-
-  //TODO: Update the link to use the actual category from props
-  const handleClick = () => {
-    router.push(`/shop/${categoryId}/${itemId}`);
-  };
+export default function ItemCard({ image, name, price, handleClick }: ItemCardProps) {
 
   return (
         <div onClick={handleClick} className="relative w-full group cursor-pointer">
@@ -40,7 +32,7 @@ export default function ItemCard({ image, name, price, itemId, categoryId }: Ite
             </div>
             <div className="mt-2 flex flex-col items-start space-y-1">
                 <span className="text-gray-800 font-medium">{name}</span>
-                <span className="text-gray-600">{price}</span>
+                <span className="text-gray-600">Rs.{price}</span>
             </div>
         </div>
     );

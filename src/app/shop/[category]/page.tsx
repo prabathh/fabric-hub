@@ -2,45 +2,42 @@
 
 import { useState } from "react";
 import { useParams } from "next/navigation";
-import {
-  SHOP_CATEGORIES,
-  SAMPLE_ITEMS,
-  MOCK_FILTERS,
-} from "@/constants/shopCategories";
-import { ItemCard } from "@/components/Shop";
+import { ItemCard, ShopFilters } from "@/components/Shop";
 import { FaFilter, FaTimes } from "react-icons/fa";
+import Breadcrumbs from "@/components/common/Breadcrumbs/Breadcrumbs";
+import { Button, Loading } from "@/components/common";
+import { useProductList } from "@/hooks/useProductList";
+import { useRouter } from "next/navigation";
+
+// TODO Image Imports
+import item_1 from "../../../../public/assets/item_1.png";
+import item_2 from "../../../../public/assets/item_2.png";
+import item_3 from "../../../../public/assets/item_3.png";
+import item_4 from "../../../../public/assets/item_4.png";
+const rotatingImages = [item_1, item_2, item_3, item_4];
 
 export default function CategoryPage() {
-  const { category } = useParams() as { category: string };
-  const cat = SHOP_CATEGORIES.find((c) => c.slug === category);
+  const router = useRouter();
+  const { category: id } = useParams() as { category: string };
+  const { items, loading, pageName } = useProductList(id);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
-  // NOTE: In a real app, you would filter items by cat.slug here:
-  const itemsToDisplay = SAMPLE_ITEMS;
-
-  if (!cat) {
-    return (
-      <div className="p-8 text-center">
-        <h1 className="text-2xl font-semibold">Category not found</h1>
-        <p className="text-gray-600 mt-2">
-          The category you’re looking for doesn’t exist.
-        </p>
-      </div>
-    );
-  }
+  const itemsToDisplay = items.products;
+  
+  const onItemClick = (itemId: string) => {
+    router.push(`/shop/${id}/${itemId}`);
+  };
 
   return (
-    <div className="w-full overflow-auto p-6 mx-auto">
-      {/* 1. Breadcrumb */}
-      <div className="text-sm text-gray-500 mb-6 space-x-2">
-        <span>Home</span>
-        <span>&gt;</span>
-        <span className="font-medium text-gray-800">{cat.name}</span>
-      </div>
-
-      {/* MOBILE FILTER TOGGLE BUTTON */}
-      <div className="flex justify-between items-center mb-4 md:hidden">
-        <h1 className="text-2xl font-bold uppercase">{cat.name}</h1>
-        <button
+    <div className="w-full overflow-auto p-6 mx-auto relative">
+      {" "}
+      <Breadcrumbs
+        items={[{ label: "Home", href: "/shop" }, { label: pageName! }]}
+      />
+      
+      <div className="flex justify-between items-center mb-4 md:hidden relative z-30">
+        <h1 className="text-2xl font-bold uppercase">{pageName}</h1>
+        <Button
+          size="small"
           onClick={() => setIsMobileFilterOpen((prev) => !prev)}
           className="p-2 bg-gray-100 rounded-lg flex items-center space-x-2 text-gray-700"
         >
@@ -50,70 +47,81 @@ export default function CategoryPage() {
             <FaFilter className="w-4 h-4" />
           )}
           <span>{isMobileFilterOpen ? "Close Filters" : "Filter Options"}</span>
-        </button>
+        </Button>
       </div>
 
-      {/* 2. Main Layout: Grid Structure */}
+      {isMobileFilterOpen && (
+        <div
+          className="absolute top-[110px] left-0 right-0 z-20 md:hidden 
+                       bg-white shadow-xl border border-gray-200 rounded-lg p-4 mx-6 max-h-[80vh] overflow-y-auto"
+        >
+          <h2 className="text-xl font-bold mb-3">{pageName} Filters</h2>
+          <ShopFilters />
+          <Button
+            size="small"
+            theme="attention"
+            onClick={() => setIsMobileFilterOpen(false)}
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-900"
+          >
+            <FaTimes className="w-5 h-5" />
+          </Button>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-8">
         <aside
-          className={`col-span-1 md:block border-r md:pr-6 md:border-r border-gray-200 ${
-            isMobileFilterOpen ? "block" : "hidden"
-          }`}
+          className={`col-span-1 md:block md:pr-6 md:border-r border-gray-200 hidden md:relative md:p-0 md:shadow-none`}
         >
-          <h1 className="hidden md:block text-3xl font-bold uppercase mb-3">
-            {cat.name}
-          </h1>
+          {loading ? (
+            <Loading size="small" />
+          ) : (
+            <h1 className="hidden md:block text-3xl font-bold uppercase mb-3">
+              {pageName}
+            </h1>
+          )}
           <p className="text-sm text-gray-600 mb-4">
-            Browse all our new arrivals here and use the filter to refine your
-            options!
+            Browse all our {pageName?.toLowerCase()} items and use the filter to
+            refine your options!
           </p>
-          <div className="border-t border-gray-200 my-4" /> {/* 1px border */}
-          {/* FILTER OPTIONS */}
-          <div className="space-y-6">
-            {/* Price Filter */}
-            <div className="space-y-2">
-              <h3 className="font-semibold text-gray-800">Price Range</h3>
-              <input type="range" min="0" max="500" className="w-full" />
-              <p className="text-sm text-gray-500">$0 - $500</p>
-            </div>
-
-            {/* General Filters */}
-            {Object.entries(MOCK_FILTERS).map(([key, options]) => (
-              <div key={key} className="space-y-2">
-                <h3 className="font-semibold text-gray-800">{key}</h3>
-                <div className="flex flex-col space-y-1 text-sm">
-                  {options.map((option) => (
-                    <label
-                      key={option}
-                      className="flex items-center space-x-2 text-gray-700 hover:text-red-500 cursor-pointer"
-                    >
-                      <input
-                        type="checkbox"
-                        className="rounded text-red-500 focus:ring-red-500"
-                      />
-                      <span>{option}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+          <div className="border-t border-gray-200 my-4" />
+          <ShopFilters />
         </aside>
 
-        {/* RIGHT COLUMN (3/4): Product Grid */}
         <main className="col-span-1 md:col-span-3">
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-            {itemsToDisplay.map((item, idx) => (
-              <ItemCard
-                key={idx}
-                image={item.image}
-                name={item.name}
-                price={item.price}
-                itemId={item.id}
-                categoryId={cat.slug}
-              />
-            ))}
-          </div>
+          {loading ? (
+            <Loading size="medium" />
+          ) : itemsToDisplay.length > 0 ? (
+            <>
+              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+                {itemsToDisplay.map((item, idx) => (
+                  <ItemCard
+                    key={item.id}
+                    image={rotatingImages[idx % rotatingImages.length]}
+                    name={item.name}
+                    price={item.price}
+                    handleClick={() => onItemClick(item.id)}
+                  />
+                ))}
+              </div>
+
+              {items.hasMore && (
+                <div className="text-center mt-8">
+                  <Button className="px-6 py-2 bg-gray-800 text-white hover:bg-red-500 transition-colors">
+                    Load More
+                  </Button>
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="p-8 text-center bg-gray-50 rounded-lg border border-gray-200">
+              <h2 className="text-xl font-semibold text-gray-800">
+                No Products Found
+              </h2>
+              <p className="text-gray-600 mt-2">
+                {`We couldn't find any items matching the current filters in **${pageName}**. Try adjusting your criteria!`}
+              </p>
+            </div>
+          )}
         </main>
       </div>
     </div>

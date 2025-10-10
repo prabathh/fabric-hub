@@ -11,10 +11,12 @@ import { Button } from "@/components/common";
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import logo from "../../../../public/assets/logo.png";
+import { useCartStore } from "@/store/useCartStore";
 
 export default function ShopHeader() {
   const router = useRouter();
   const { currentUser, setCurrentUser } = useAuthStore();
+  const cartItemCount = useCartStore((state) => state.getTotalItems());
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -53,7 +55,7 @@ export default function ShopHeader() {
       : "Guest";
 
   return (
-    <header className="w-full pl-4 pr-6 py-4">
+    <header className="w-full pl-4 pr-8 py-4">
       <div className="flex flex-wrap items-center justify-between gap-3 md:gap-0">
         {/* Logo */}
         <Link href="/shop" className="flex-shrink-0 order-1">
@@ -76,7 +78,7 @@ export default function ShopHeader() {
 
         {/* Icons */}
         <div className="order-2 md:order-3 flex items-center gap-4 md:gap-6">
-          <div className="relative" ref={menuRef}> 
+          <div className="relative" ref={menuRef}>
             <LuUserRound
               onClick={() => setIsMenuOpen((prev) => !prev)}
               className="w-6 h-6 cursor-pointer text-gray-700 hover:text-red-500 transition-colors"
@@ -164,10 +166,23 @@ export default function ShopHeader() {
             onClick={() => router.push(`/shop/wish-list`)}
             className="w-6 h-6 cursor-pointer text-gray-700 hover:text-red-500 transition-colors"
           />
-          <LuShoppingCart
-            onClick={() => router.push(`/shop/cart`)}
-            className="w-6 h-6 cursor-pointer text-gray-700 hover:text-red-500 transition-colors"
-          />
+          <div className="relative inline-block">
+            <LuShoppingCart
+              onClick={() => router.push(`/shop/cart`)}
+              className="w-6 h-6 cursor-pointer text-gray-700 hover:text-red-500 transition-colors"
+            />
+
+            {/* Cart Count Badge */}
+            {cartItemCount > 0 && (
+              <span
+                className="absolute -top-2 -right-2 inline-flex items-center justify-center 
+                         w-5 h-5 text-xs font-bold leading-none text-white bg-red-500 
+                         rounded-full transform translate-x-1/2 -translate-y-1/2"
+              >
+                {cartItemCount > 99 ? "99+" : cartItemCount}
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </header>
